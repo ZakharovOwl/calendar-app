@@ -5,9 +5,7 @@ import {
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
-import {
-  MatButtonModule,
-} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { CalendarView } from '../../../shared/models';
 import { CalendarService } from '../../../services/calendar.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

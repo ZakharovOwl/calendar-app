@@ -1,12 +1,11 @@
 <div class="calendar-header">
-
-
   <div>
     @if (viewDate$ | async; as viewDate) {
-      @if ((currentView$ | async) === CalendarView.Month || (currentView$ | async) === CalendarView.Week) {
-        <h2
-          class="calendar-month"
-        >
+      @if (
+        (currentView$ | async) === CalendarView.Month ||
+        (currentView$ | async) === CalendarView.Week
+      ) {
+        <h2 class="calendar-month">
           {{ viewDate | date: 'MMMM' }}
           <span>{{ viewDate | date: 'y' }}</span>
         </h2>
@@ -29,14 +28,10 @@
     aria-label="Calendar-View"
   >
     <mat-button-toggle checked="{{ true }}" value="{{ CalendarView.Month }}"
-    >Month</mat-button-toggle
+      >Month</mat-button-toggle
     >
-    <mat-button-toggle value="{{ CalendarView.Week }}"
-    >Week</mat-button-toggle
-    >
-    <mat-button-toggle value="{{ CalendarView.Day }}"
-    >Day</mat-button-toggle
-    >
+    <mat-button-toggle value="{{ CalendarView.Week }}">Week</mat-button-toggle>
+    <mat-button-toggle value="{{ CalendarView.Day }}">Day</mat-button-toggle>
   </mat-button-toggle-group>
 
   <div class="calendar-controls">

@@ -9,13 +9,13 @@
           class="calendar-view-month"
         >
           <thead>
-          <tr>
-            @for (day of weekDays; track day) {
-              <th>
-                {{ day }}
-              </th>
-            }
-          </tr>
+            <tr>
+              @for (day of weekDays; track day) {
+                <th>
+                  {{ day }}
+                </th>
+              }
+            </tr>
           </thead>
           <tbody cdkDropListGroup>
             @for (week of weeks$ | async; track week) {
@@ -27,7 +27,10 @@
                       (cdkDropListDropped)="drop($event, date)"
                       [cdkDropListData]="appointments"
                       [class.today]="date | isToday"
-                      [ngStyle]="{ opacity: (date | isCurrentMonth: viewDate) ? '1' : '0.5' }"
+                      [ngStyle]="{
+                        opacity:
+                          (date | isCurrentMonth: viewDate) ? '1' : '0.5',
+                      }"
                     >
                       <div
                         (click)="selectDate(date)"
@@ -40,7 +43,10 @@
                         {{ date.getDate() }}
                       </div>
                       <div class="appointments">
-                        @for (appointment of appointments; track appointment.uuid) {
+                        @for (
+                          appointment of appointments;
+                          track appointment.uuid
+                        ) {
                           <div
                             tabindex="0"
                             *ngIf="appointment.date | isSameDate: date"
@@ -48,17 +54,22 @@
                             cdkDrag
                             cdkDragHandle
                             [cdkDragData]="appointment"
-                            [ngStyle]="{ 'background-color': appointment.color }"
+                            [ngStyle]="{
+                              'background-color': appointment.color,
+                            }"
                             (click)="editAppointment(appointment, $event)"
-                            (keydown.enter)="editAppointment(appointment, $event)"
-                            (keydown.space)="editAppointment(appointment, $event)"
+                            (keydown.enter)="
+                              editAppointment(appointment, $event)
+                            "
+                            (keydown.space)="
+                              editAppointment(appointment, $event)
+                            "
                           >
                             <span>{{ appointment.title }}</span>
                           </div>
                         }
                       </div>
                     </td>
-
                   }
                 }
               </tr>
@@ -74,12 +85,12 @@
           class="calendar-view-week"
         >
           <thead>
-          <tr>
-            <th></th>
-            @for (day of weekDays; track day; let idx = $index) {
-              <th>{{ day }} {{ monthDays[idx].getDate() }}</th>
-            }
-          </tr>
+            <tr>
+              <th></th>
+              @for (day of weekDays; track day; let idx = $index) {
+                <th>{{ day }} {{ monthDays[idx].getDate() }}</th>
+              }
+            </tr>
           </thead>
           <tbody cdkDropListGroup>
             @for (timeSlot of timeSlots; track timeSlot) {
@@ -101,7 +112,13 @@
                       tabindex="0"
                     ></div>
                     @for (appointment of appointments; track appointment.uuid) {
-                      @if (isAppointmentsForDateTime(appointment,monthDays[i], timeSlot)) {
+                      @if (
+                        isAppointmentsForDateTime(
+                          appointment,
+                          monthDays[i],
+                          timeSlot
+                        )
+                      ) {
                         <div
                           tabindex="0"
                           class="appointment"
@@ -150,7 +167,9 @@
                     tabindex="0"
                   ></div>
                   @for (appointment of appointments; track appointment.uuid) {
-                    @if (isAppointmentsForDateTime(appointment, monthDays[0], slot)) {
+                    @if (
+                      isAppointmentsForDateTime(appointment, monthDays[0], slot)
+                    ) {
                       <div
                         tabindex="0"
                         class="appointment"
@@ -166,11 +185,12 @@
                       </div>
                     }
                   }
-                  }
+                </td>
+              </tr>
+            }
           </tbody>
         </table>
       }
     }
   }
 }
-

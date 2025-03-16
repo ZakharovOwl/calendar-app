@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -30,6 +30,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   ],
   templateUrl: './view-calendar.component.html',
   styleUrl: './view-calendar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewCalendarComponent {
   currentView$: Observable<CalendarView>;

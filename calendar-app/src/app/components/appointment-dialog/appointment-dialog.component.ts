@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialogTitle,
   MatDialogContent,
-  MatDialogActions
+  MatDialogActions,
 } from '@angular/material/dialog';
 import {
   AbstractControl,
@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CommonModule } from '@angular/common';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -29,6 +30,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,

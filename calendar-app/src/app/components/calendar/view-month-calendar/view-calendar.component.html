@@ -1,0 +1,176 @@
+@if (appointments$ | async; as appointments) {
+  @if (monthDays$ | async; as monthDays) {
+    @switch (currentView$ | async) {
+      @case (CalendarView.Month) {
+        <table
+          width="100%"
+          cellspacing="0"
+          cellpadding="0"
+          class="calendar-view-month"
+        >
+          <thead>
+          <tr>
+            @for (day of weekDays; track day) {
+              <th>
+                {{ day }}
+              </th>
+            }
+          </tr>
+          </thead>
+          <tbody cdkDropListGroup>
+            @for (week of weeks$ | async; track week) {
+              <tr>
+                @if (viewDate$ | async; as viewDate) {
+                  @for (date of week; track date) {
+                    <td
+                      cdkDropList
+                      (cdkDropListDropped)="drop($event, date)"
+                      [cdkDropListData]="appointments"
+                      [class.today]="date | isToday"
+                      [ngStyle]="{ opacity: (date | isCurrentMonth: viewDate) ? '1' : '0.5' }"
+                    >
+                      <div
+                        (click)="selectDate(date)"
+                        (keydown.enter)="selectDate(date)"
+                        (keydown.space)="selectDate(date)"
+                        class="cell-overlay"
+                        tabindex="0"
+                      ></div>
+                      <div class="date">
+                        {{ date.getDate() }}
+                      </div>
+                      <div class="appointments">
+                        @for (appointment of appointments; track appointment.uuid) {
+                          <div
+                            tabindex="0"
+                            *ngIf="appointment.date | isSameDate: date"
+                            class="appointment"
+                            cdkDrag
+                            cdkDragHandle
+                            [cdkDragData]="appointment"
+                            [ngStyle]="{ 'background-color': appointment.color }"
+                            (click)="editAppointment(appointment, $event)"
+                            (keydown.enter)="editAppointment(appointment, $event)"
+                            (keydown.space)="editAppointment(appointment, $event)"
+                          >
+                            <span>{{ appointment.title }}</span>
+                          </div>
+                        }
+                      </div>
+                    </td>
+
+                  }
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @case (CalendarView.Week) {
+        <table
+          width="100%"
+          cellspacing="0"
+          cellpadding="0"
+          class="calendar-view-week"
+        >
+          <thead>
+          <tr>
+            <th></th>
+            @for (day of weekDays; track day; let idx = $index) {
+              <th>{{ day }} {{ monthDays[idx].getDate() }}</th>
+            }
+          </tr>
+          </thead>
+          <tbody cdkDropListGroup>
+            @for (timeSlot of timeSlots; track timeSlot) {
+              <tr>
+                <td [width]="10" class="calendar-slot-cell">
+                  <span>{{ timeSlot }}</span>
+                </td>
+                @for (day of weekDays; track day; let i = $index) {
+                  <td
+                    cdkDropList
+                    (cdkDropListDropped)="drop($event, monthDays[i], timeSlot)"
+                    [cdkDropListData]="appointments"
+                  >
+                    <div
+                      (click)="selectDate(monthDays[i], timeSlot)"
+                      (keydown.enter)="selectDate(monthDays[i], timeSlot)"
+                      (keydown.space)="selectDate(monthDays[i], timeSlot)"
+                      class="cell-overlay"
+                      tabindex="0"
+                    ></div>
+                    @for (appointment of appointments; track appointment.uuid) {
+                      @if (isAppointmentsForDateTime(appointment,monthDays[i], timeSlot)) {
+                        <div
+                          tabindex="0"
+                          class="appointment"
+                          cdkDrag
+                          cdkDragHandle
+                          [cdkDragData]="appointment"
+                          [ngStyle]="{ 'background-color': appointment.color }"
+                          (click)="editAppointment(appointment, $event)"
+                          (keydown.enter)="editAppointment(appointment, $event)"
+                          (keydown.space)="editAppointment(appointment, $event)"
+                        >
+                          <span>{{ appointment.title }}</span>
+                        </div>
+                      }
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @case (CalendarView.Day) {
+        <table
+          width="100%"
+          cellspacing="0"
+          cellpadding="0"
+          class="calendar-view-day"
+        >
+          <tbody cdkDropListGroup>
+            @for (slot of timeSlots; track slot) {
+              <tr>
+                <td [width]="10" class="calendar-slot-cell">
+                  <span>{{ slot }}</span>
+                </td>
+                <td
+                  cdkDropList
+                  (cdkDropListDropped)="drop($event, monthDays[0], slot)"
+                  [cdkDropListData]="appointments"
+                >
+                  <div
+                    (click)="selectDate(monthDays[0], slot)"
+                    (keydown.enter)="selectDate(monthDays[0], slot)"
+                    (keydown.space)="selectDate(monthDays[0], slot)"
+                    class="cell-overlay"
+                    tabindex="0"
+                  ></div>
+                  @for (appointment of appointments; track appointment.uuid) {
+                    @if (isAppointmentsForDateTime(appointment, monthDays[0], slot)) {
+                      <div
+                        tabindex="0"
+                        class="appointment"
+                        cdkDrag
+                        cdkDragHandle
+                        [cdkDragData]="appointment"
+                        [ngStyle]="{ 'background-color': appointment.color }"
+                        (click)="editAppointment(appointment, $event)"
+                        (keydown.enter)="editAppointment(appointment, $event)"
+                        (keydown.space)="editAppointment(appointment, $event)"
+                      >
+                        <span>{{ appointment.title }}</span>
+                      </div>
+                    }
+                  }
+                  }
+          </tbody>
+        </table>
+      }
+    }
+  }
+}
+

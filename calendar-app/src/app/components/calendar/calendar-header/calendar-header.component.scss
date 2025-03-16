@@ -1,0 +1,24 @@
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: var(--header-height);
+  padding: 10px 0;
+
+  h2 {
+    margin: 0;
+  }
+
+  .calendar-month {
+    font-weight: bold;
+    span {
+      font-weight: 100;
+    }
+  }
+
+  .calendar-controls {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
